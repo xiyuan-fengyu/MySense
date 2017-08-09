@@ -15,7 +15,7 @@ $(document).ready(() => {
             if (res.success) {
                 let htmlStr = res.data.map(item => {
                     let esBody = "";
-                    if (item.method == "PUT") {
+                    if (item.body) {
                         esBody = `
                             <label>Body</label>
                             <div class="jsonData mb24">

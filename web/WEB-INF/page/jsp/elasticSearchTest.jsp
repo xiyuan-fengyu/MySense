@@ -54,7 +54,7 @@
                 <c:forEach items="${list}" var="item">
                     <div class="mb24">
                         <pre>${item.method} ${item.path}</pre>
-                        <c:if test="${item.method eq 'PUT'}">
+                        <c:if test="${item.body != null}">
                             <label>Body</label>
                             <div class="jsonData mb24">
                                 <textarea style="display: none;">${item.body}</textarea>
