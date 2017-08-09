@@ -11,6 +11,7 @@ $(document).ready(() => {
 
     let elasticInput = CodeMirror.fromTextArea($("#elasticInput")[0], {
         lineNumbers: true,
+        mode: "text/javascript",
         extraKeys: extraKeys
     });
 
