@@ -3,14 +3,29 @@
  */
 $(document).ready(() => {
 
+    CodeMirror.commands.submit = submit;
+
+    let runKey = (CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault ? "Cmd" : "Ctrl") + "-Enter";
+    let extraKeys = {};
+    extraKeys[runKey] = "submit";
+
+    let elasticInput = CodeMirror.fromTextArea($("#elasticInput")[0], {
+        lineNumbers: true,
+        extraKeys: extraKeys
+    });
+
     $(".jsonData").each((i, obj) => {
         let $obj = $(obj);
-        $obj.JSONView($obj.find("textarea").val());
+        $obj.html(new JSONFormat($obj.find("textarea").val(), 4).toString());
     });
 
     $("#submit").click(e => {
+        submit();
+    });
+
+    function submit() {
         $.post("/app/sense/test", {
-            data: $("#elasticInput").val()
+            data: elasticInput.getValue()
         }, (res, status) => {
             if (res.success) {
                 let htmlStr = res.data.map(item => {
@@ -37,13 +52,14 @@ $(document).ready(() => {
                 $("#elasticResult").html(htmlStr);
                 $(".jsonData").each((i, obj) => {
                     let $obj = $(obj);
-                    $obj.JSONView($obj.find("textarea").text());
+                    $obj.html(new JSONFormat($obj.find("textarea").val(), 4).toString());
                 });
             }
             else {
                 $("#elasticResult").html(res.message);
             }
         });
-    });
+    }
 
 });
+

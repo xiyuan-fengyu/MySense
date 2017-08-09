@@ -56,6 +56,14 @@ public class ElasticOption {
             tempResult = HttpRequest.delete(ElasticSearchCfg.root + path).body();
         }
         this.result = tempResult;
+
+        if (!"GET".equals(method)) {
+            try {
+                Thread.sleep(ElasticSearchCfg.wait_after_modify);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static List<ElasticOption> parse(String str) {
@@ -90,9 +98,9 @@ public class ElasticOption {
 
         int len = lines.length;
         String line;
-        if (i < len && lines[i + 1].equals("{")) {
+        if (i + 1 < len && lines[i + 1].equals("{")) {
             StringBuilder builder = new StringBuilder();
-            while (i < len) {
+            while (i + 1 < len) {
                 i++;
                 line = lines[i];
                 if (line.equals("}")) {

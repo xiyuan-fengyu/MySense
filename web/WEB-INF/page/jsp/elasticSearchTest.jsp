@@ -25,9 +25,15 @@
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <link href="//cdn.bootcss.com/jquery-jsonview/1.2.3/jquery.jsonview.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=ctx%>/css/json.css">
+
+    <link href="//cdn.bootcss.com/codemirror/5.28.0/codemirror.min.css" rel="stylesheet">
 
     <style>
+        .mt12 {
+            margin-top: 12px;
+        }
+
         .mt24 {
             margin-top: 24px;
         }
@@ -44,7 +50,7 @@
     <div class="row mt24 mb24">
         <label>elasticsearch查询语句</label>
         <textarea id="elasticInput" class="form-control mb24" rows="15">${search}</textarea>
-        <button id="submit" type="button" class="btn btn-primary">Submit</button>
+        <button id="submit" type="button" class="btn btn-primary mt12">Submit</button>
     </div>
 
     <div class="row mb24">
@@ -75,6 +81,7 @@
 
 <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="//cdn.bootcss.com/jquery-jsonview/1.2.3/jquery.jsonview.min.js"></script>
+<script src="//cdn.bootcss.com/codemirror/5.28.0/codemirror.min.js"></script>
+<script src="<%=ctx%>/js/jquery.json.js"></script>
 <script src="<%=ctx%>/js/elasticSearchTest.js"></script>
 </html>
