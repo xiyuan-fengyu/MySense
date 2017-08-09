@@ -7,9 +7,7 @@
 ![tomcat_config_1](github/tomcat_config_1.png)  
 
 部署运行成功后，在浏览器中打开如下地址：
-```
-http://localhost:5601/app/sense
-或者
-http://localhost:5601/app/sense/?load_from=https://www.elastic.co/guide/cn/elasticsearch/guide/current/snippets/010_Intro/30_Get.json
-```
+[http://localhost:5601/app/sense  ](http://localhost:5601/app/sense)  
+或者  
+[http://localhost:5601/app/sense/?load_from=https://www.elastic.co/guide/cn/elasticsearch/guide/current/snippets/010_Intro/30_Get.json](http://localhost:5601/app/sense/?load_from=https://www.elastic.co/guide/cn/elasticsearch/guide/current/snippets/010_Intro/30_Get.json)    
 可以看到运行效果
