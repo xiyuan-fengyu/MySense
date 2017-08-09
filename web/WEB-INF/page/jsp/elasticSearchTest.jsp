@@ -52,7 +52,7 @@
         <div id="elasticResult">
             <c:if test="${list != null}">
                 <c:forEach items="${list}" var="item">
-                    <div class="row mb24">
+                    <div class="mb24">
                         <pre>${item.method} ${item.path}</pre>
                         <c:if test="${item.method eq 'PUT'}">
                             <label>Body</label>

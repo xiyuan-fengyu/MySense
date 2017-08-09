@@ -24,7 +24,7 @@ $(document).ready(() => {
                             `;
                     }
                     return `
-                        <div class="row mb24">
+                        <div class="mb24">
                             <pre>${item.method} ${item.path}</pre>
                             ${esBody}
                             <label>Result</label>
