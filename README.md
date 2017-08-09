@@ -10,7 +10,9 @@
 [http://localhost:5601/app/sense  ](http://localhost:5601/app/sense)  
 或者  
 [http://localhost:5601/app/sense/?load_from=https://www.elastic.co/guide/cn/elasticsearch/guide/current/snippets/010_Intro/30_Get.json](http://localhost:5601/app/sense/?load_from=https://www.elastic.co/guide/cn/elasticsearch/guide/current/snippets/010_Intro/30_Get.json)    
-可以看到运行效果
+可以看到运行效果  
+在官方文档中点击“在SENSE中查看”按钮就是打开第二种连接  
+
 
 elasticsearch服务地址可以在  
 [property/elasticSearchCfg.properties](src/main/resources/property/elasticSearchCfg.properties)  
