@@ -42,18 +42,22 @@
             margin-bottom: 24px;
         }
 
+        .CodeMirror {
+            min-height: 640px;
+        }
+
     </style>
 </head>
 
 <body>
-<div class="container">
-    <div class="col-md-6 mt24 mb24">
+<div class="container-fluid">
+    <div class="col-md-offset-1 col-md-5 mt24 mb24">
         <label>elasticsearch查询语句</label>
         <textarea id="elasticInput" class="form-control mb24" rows="15">${search}</textarea>
         <button id="submit" type="button" class="btn btn-primary mt12">Submit</button>
     </div>
 
-    <div class="col-md-6 mt24 mb24">
+    <div class="col-md-5 mt24 mb24">
         <label>查询结果</label>
         <div id="elasticResult">
             <c:if test="${list != null}">
@@ -83,6 +87,8 @@
 <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script src="//cdn.bootcss.com/codemirror/5.28.0/codemirror.min.js"></script>
 <script src="//cdn.bootcss.com/codemirror/5.28.0/mode/javascript/javascript.min.js"></script>
+<script src="//cdn.bootcss.com/codemirror/5.28.0/addon/comment/comment.min.js"></script>
+<script src="//cdn.bootcss.com/codemirror/5.28.0/keymap/sublime.js"></script>
 <script src="<%=ctx%>/js/jquery.json.js"></script>
 <script src="<%=ctx%>/js/elasticSearchTest.js"></script>
 </html>

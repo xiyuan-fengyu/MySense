@@ -12,12 +12,12 @@ $(document).ready(() => {
     let elasticInput = CodeMirror.fromTextArea($("#elasticInput")[0], {
         lineNumbers: true,
         mode: "text/javascript",
+        keyMap: "sublime",
         extraKeys: extraKeys
     });
 
     $(".jsonData").each((i, obj) => {
-        let $obj = $(obj);
-        $obj.html(new JSONFormat($obj.find("textarea").val(), 4).toString());
+        jsonDataDivFormat(obj);
     });
 
     $("#submit").click(e => {
@@ -52,14 +52,24 @@ $(document).ready(() => {
                 }).join("\n");
                 $("#elasticResult").html(htmlStr);
                 $(".jsonData").each((i, obj) => {
-                    let $obj = $(obj);
-                    $obj.html(new JSONFormat($obj.find("textarea").val(), 4).toString());
+                    jsonDataDivFormat(obj);
                 });
             }
             else {
                 $("#elasticResult").html(res.message);
             }
         });
+    }
+
+    function jsonDataDivFormat(obj) {
+        let $obj = $(obj);
+        let str = $obj.find("textarea").val();
+        try {
+            $obj.html(new JSONFormat(str, 4).toString());
+        }
+        catch (e) {
+            $obj.html(str.split('\n').map(item => `<p>${item}</p>`).join('\n'));
+        }
     }
 
 });

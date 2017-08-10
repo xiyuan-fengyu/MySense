@@ -44,13 +44,20 @@ public class ElasticOption {
         String tempResult = null;
         if ("GET".equals(method)) {
             HttpRequest request = HttpRequest.get(ElasticSearchCfg.root + path);
-            if (this.body != null) {
+            if (body != null) {
                 request.send(body.getBytes(StandardCharsets.UTF_8));
             }
             tempResult = request.body();
         }
         else if ("PUT".equals(method)) {
-            tempResult = HttpRequest.put(ElasticSearchCfg.root + path).send(body.getBytes(StandardCharsets.UTF_8)).body();
+            tempResult = HttpRequest.put(ElasticSearchCfg.root + path).send(body == null ? new byte[0] : body.getBytes(StandardCharsets.UTF_8)).body();
+        }
+        else if ("POST".equals(method)) {
+            HttpRequest request = HttpRequest.post(ElasticSearchCfg.root + path);
+            if (body != null) {
+                request.send(body.getBytes(StandardCharsets.UTF_8));
+            }
+            tempResult = request.body();
         }
         else if ("DELETE".equals(method)) {
             tempResult = HttpRequest.delete(ElasticSearchCfg.root + path).body();
@@ -72,21 +79,25 @@ public class ElasticOption {
             String[] lines = str.split("\n");
             Object[] out = new Object[2];
             for (int i = 0, len = lines.length; i < len; i++) {
-                String line = lines[i];
-                if (line.startsWith("#")) {
+                String line = lines[i].trim();
+                if (line.startsWith("#") || line.startsWith("//")) {
                 }
-                else if (line.startsWith("GET ")) {
-                    findJsonBody(lines, i, out);
-                    i = (int) out[0];
-                    options.add(new ElasticOption("GET", line.substring(4), (String) out[1]));
-                }
-                else if (line.startsWith("DELETE ")) {
-                    options.add(new ElasticOption("DELETE", line.substring(7), null));
-                }
-                else if (line.startsWith("PUT ")) {
-                    findJsonBody(lines, i, out);
-                    i = (int) out[0];
-                    options.add(new ElasticOption("PUT", line.substring(4), (String) out[1]));
+                else {
+                    String method = line.split(" ")[0];
+                    if (method.equals("GET")
+                            || method.equals("PUT")
+                            || method.equals("POST")) {
+                        findJsonBody(lines, i, out);
+                        i = (int) out[0];
+                        int pathIndex = method.length() + 1;
+                        while (pathIndex < line.length() && line.charAt(pathIndex) == ' ') {
+                            pathIndex++;
+                        }
+                        options.add(new ElasticOption(method, line.substring(pathIndex), (String) out[1]));
+                    }
+                    else if (line.startsWith("DELETE ")) {
+                        options.add(new ElasticOption("DELETE", line.substring(7), null));
+                    }
                 }
             }
         }
@@ -98,23 +109,26 @@ public class ElasticOption {
 
         int len = lines.length;
         String line;
-        if (i + 1 < len && lines[i + 1].equals("{")) {
-            StringBuilder builder = new StringBuilder();
-            while (i + 1 < len) {
-                i++;
-                line = lines[i];
-                if (line.equals("}")) {
-                    builder.append("}");
+        boolean isBodyFind = false;
+
+        StringBuilder builder = new StringBuilder();
+        while (i + 1 < len) {
+            i++;
+            line = lines[i].trim();
+            if (line.length() > 0 && !line.startsWith("#") && !line.startsWith("//")) {
+                if (line.matches("^(GET|POST|PUT|DELETE) .*")) {
+                    i--;
                     break;
                 }
-                else if (!line.startsWith("#")) {
+                else {
                     builder.append(line).append('\n');
                 }
             }
-            if (builder.length() > 0) {
-                out[1] = builder.toString();
-            }
         }
+        if (builder.length() > 0) {
+            out[1] = builder.toString();
+        }
+
         out[0] = i;
     }
 
