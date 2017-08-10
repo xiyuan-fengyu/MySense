@@ -47,13 +47,13 @@
 
 <body>
 <div class="container">
-    <div class="row mt24 mb24">
+    <div class="col-md-6 mt24 mb24">
         <label>elasticsearch查询语句</label>
         <textarea id="elasticInput" class="form-control mb24" rows="15">${search}</textarea>
         <button id="submit" type="button" class="btn btn-primary mt12">Submit</button>
     </div>
 
-    <div class="row mb24">
+    <div class="col-md-6 mt24 mb24">
         <label>查询结果</label>
         <div id="elasticResult">
             <c:if test="${list != null}">
