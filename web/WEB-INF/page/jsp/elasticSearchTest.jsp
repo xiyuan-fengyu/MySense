@@ -69,7 +69,7 @@
     </div>
 </div>
 
-<div class="mt24 mb24" style="position: absolute; width: 40%; right: 0">
+<div class="mt24 mb24" style="position: absolute; width: 40%; right: 0; background: #ffffff">
     <div class="col-md-10">
         <label>查询结果</label>
         <div id="elasticResult">

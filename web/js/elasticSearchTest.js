@@ -75,7 +75,54 @@ $(document).ready(() => {
             $obj.html(new JSONFormat(str, 4).toString());
         }
         catch (e) {
-            $obj.html(str.split('\n').map(item => `<p>${item}</p>`).join('\n'));
+            let split = str.split('\n').filter(line => line.length > 0);
+
+            //判断是否可以渲染为table
+            let tableData = [];
+            let len = split.length;
+            if (len > 0){
+                let lineLen = 0;
+                let lastColDivider = 0;
+                for (let j = 0; j < len; j++) {
+                    lineLen = Math.max(lineLen, split[j].length);
+                }
+
+                for (let i = 0; i <= lineLen; i++) {
+                    let isColDivider = true;
+                    if (i < lineLen) {
+                        for (let j = 0; j < len; j++) {
+                            if (split[j].length > i && split[j].charAt(i) != ' ') {
+                                isColDivider = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (isColDivider) {
+                        for (let j = 0; j < len; j++) {
+                            if (tableData.length <= j) {
+                                tableData.push([]);
+                            }
+                            tableData[j].push(split[j].substring(lastColDivider, i).trim());
+                        }
+                        lastColDivider = i;
+                    }
+                }
+            }
+
+            if (tableData.length > 0 && tableData[0].length > 2) {
+                let rowStr = tableData.map(rowData => "<tr>\n" + rowData.map(col => `<td>${col}</td>`).join('\n') + "<tr>").join('\n');
+                let tableStr = `
+                <table class="table table-hover table-bordered">
+                    <tbody>
+                    ${rowStr}
+                    </tbody>
+                </table>
+                `;
+                $obj.html(tableStr);
+            }
+            else {
+                $obj.html(split.map(item => `<p>${item}</p>`).join('\n'));
+            }
         }
     }
 
