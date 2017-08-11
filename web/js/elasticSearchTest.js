@@ -143,8 +143,8 @@ $(document).ready(() => {
                         if (!$li.hasClass("active")) {
                             lis.removeClass("active");
                             $li.addClass("active");
-                            loadLocal($li.attr("data-value"));
                         }
+                        loadLocal($li.attr("data-value"));
                     });
                 });
             }

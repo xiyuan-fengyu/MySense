@@ -1,0 +1,2 @@
+//这里的索引是动词，相当于把文档存储到elasticsearch，并且通过分析文档中的内容创建相应的索引(名词)
+PUT /my_first_index/

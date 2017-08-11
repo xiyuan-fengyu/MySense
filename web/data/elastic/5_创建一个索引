@@ -1,0 +1,5 @@
+//创建索引
+PUT /my_first_index
+
+//查看所有索引的状态
+GET /_cat/indices?v

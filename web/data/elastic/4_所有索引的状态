@@ -1,0 +1,2 @@
+//查看所有索引的状态
+GET /_cat/indices?v

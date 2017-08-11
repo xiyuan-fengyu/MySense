@@ -55,7 +55,7 @@
 </head>
 
 <body>
-<div class="mt24" style="position: fixed; width: 60%;">
+<div class="mt24" style="position: fixed; width: 50%;">
     <ul id="locals" class="col-md-offset-1 col-md-3 list-group" style="max-height: 720px; overflow-y: auto">
 
     </ul>
@@ -69,8 +69,8 @@
     </div>
 </div>
 
-<div class="mt24 mb24" style="position: absolute; width: 40%; right: 0; background: #ffffff">
-    <div class="col-md-10">
+<div class="mt24 mb24" style="position: absolute; width: 50%; right: 0; background: #ffffff">
+    <div class="col-md-11">
         <label>查询结果</label>
         <div id="elasticResult">
             <c:if test="${list != null}">
