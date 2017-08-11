@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="<%=ctx%>/css/json.css">
 
     <link href="//cdn.bootcss.com/codemirror/5.28.0/codemirror.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/codemirror/5.28.0/addon/scroll/simplescrollbars.min.css" rel="stylesheet">
 
     <style>
         .mt12 {
@@ -94,6 +95,7 @@
 <script src="//cdn.bootcss.com/codemirror/5.28.0/mode/javascript/javascript.min.js"></script>
 <script src="//cdn.bootcss.com/codemirror/5.28.0/addon/comment/comment.min.js"></script>
 <script src="//cdn.bootcss.com/codemirror/5.28.0/keymap/sublime.js"></script>
+<script src="//cdn.bootcss.com/codemirror/5.28.0/addon/scroll/simplescrollbars.min.js"></script>
 <script src="<%=ctx%>/js/jquery.json.js"></script>
 <script src="<%=ctx%>/js/elasticSearchTest.js"></script>
 </html>
