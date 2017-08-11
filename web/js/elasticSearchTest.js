@@ -15,6 +15,7 @@ $(document).ready(() => {
         keyMap: "sublime",
         extraKeys: extraKeys
     });
+    let elasticUrl = $("#elasticUrl");
 
     $(".jsonData").each((i, obj) => {
         jsonDataDivFormat(obj);
@@ -25,8 +26,9 @@ $(document).ready(() => {
     });
 
     function submit() {
-        $.post("/app/sense/test", {
-            data: elasticInput.getValue()
+        $.post("/app/sense/execute", {
+            data: elasticInput.getValue(),
+            elastic: elasticUrl.val()
         }, (res, status) => {
             if (res.success) {
                 let htmlStr = res.data.map(item => {

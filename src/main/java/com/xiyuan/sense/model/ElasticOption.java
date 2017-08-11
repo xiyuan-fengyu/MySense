@@ -36,31 +36,31 @@ public class ElasticOption {
         return result;
     }
 
-    private ElasticOption(String method, String path, String body) {
+    private ElasticOption(String method, String path, String body, String elastic) {
         this.method = method;
         this.path = path;
         this.body = body;
 
         String tempResult = null;
         if ("GET".equals(method)) {
-            HttpRequest request = HttpRequest.get(ElasticSearchCfg.root + path);
+            HttpRequest request = HttpRequest.get(elastic + path);
             if (body != null) {
                 request.send(body.getBytes(StandardCharsets.UTF_8));
             }
             tempResult = request.body();
         }
         else if ("PUT".equals(method)) {
-            tempResult = HttpRequest.put(ElasticSearchCfg.root + path).send(body == null ? new byte[0] : body.getBytes(StandardCharsets.UTF_8)).body();
+            tempResult = HttpRequest.put(elastic + path).send(body == null ? new byte[0] : body.getBytes(StandardCharsets.UTF_8)).body();
         }
         else if ("POST".equals(method)) {
-            HttpRequest request = HttpRequest.post(ElasticSearchCfg.root + path);
+            HttpRequest request = HttpRequest.post(elastic + path);
             if (body != null) {
                 request.send(body.getBytes(StandardCharsets.UTF_8));
             }
             tempResult = request.body();
         }
         else if ("DELETE".equals(method)) {
-            tempResult = HttpRequest.delete(ElasticSearchCfg.root + path).body();
+            tempResult = HttpRequest.delete(elastic + path).body();
         }
         this.result = tempResult;
 
@@ -74,6 +74,14 @@ public class ElasticOption {
     }
 
     public static List<ElasticOption> parse(String str) {
+        return parse(str, ElasticSearchCfg.root);
+    }
+
+    public static List<ElasticOption> parse(String str, String elastic) {
+        if (elastic == null || elastic.isEmpty()) {
+            elastic = ElasticSearchCfg.root;
+        }
+
         List<ElasticOption> options = new ArrayList<>();
         if (str != null) {
             String[] lines = str.split("\n");
@@ -93,10 +101,10 @@ public class ElasticOption {
                         while (pathIndex < line.length() && line.charAt(pathIndex) == ' ') {
                             pathIndex++;
                         }
-                        options.add(new ElasticOption(method, line.substring(pathIndex), (String) out[1]));
+                        options.add(new ElasticOption(method, line.substring(pathIndex), (String) out[1], elastic));
                     }
                     else if (line.startsWith("DELETE ")) {
-                        options.add(new ElasticOption("DELETE", line.substring(7), null));
+                        options.add(new ElasticOption("DELETE", line.substring(7), null, elastic));
                     }
                 }
             }

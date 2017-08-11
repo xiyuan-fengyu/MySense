@@ -52,7 +52,10 @@
 <body>
 <div class="container-fluid">
     <div class="col-md-offset-1 col-md-5 mt24 mb24">
-        <label>elasticsearch查询语句</label>
+        <div class="form-group mb24">
+            <label>elasticsearch查询</label>
+            <input type="url" class="form-control" id="elasticUrl" placeholder="elasticsearch服务器，默认 http://localhost:9200">
+        </div>
         <textarea id="elasticInput" class="form-control mb24" rows="15">${search}</textarea>
         <button id="submit" type="button" class="btn btn-primary mt12">Submit</button>
     </div>

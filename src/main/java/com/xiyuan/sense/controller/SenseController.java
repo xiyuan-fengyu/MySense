@@ -18,7 +18,7 @@ import java.util.Map;
 public class SenseController {
 
     @RequestMapping(value = "app/sense")
-    public String execute(String load_from, Model model) {
+    public String sensePage(String load_from, Model model) {
         if (load_from != null) {
             String search = HttpRequest.get(load_from).body();
             model.addAttribute("search", search);
@@ -30,10 +30,10 @@ public class SenseController {
         return "elasticSearchTest";
     }
 
-    @RequestMapping(value = "app/sense/test")
+    @RequestMapping(value = "app/sense/execute")
     @ResponseBody
-    public Map<String, Object> test(String data) {
-        List<ElasticOption> list = ElasticOption.parse(data);
+    public Map<String, Object> execute(String data, String elastic) {
+        List<ElasticOption> list = ElasticOption.parse(data, elastic);
         if (list.size() > 0) {
             return ResponseUtil.success("执行成功", list);
         }
