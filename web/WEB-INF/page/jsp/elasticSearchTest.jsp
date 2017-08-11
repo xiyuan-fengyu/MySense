@@ -50,8 +50,8 @@
 </head>
 
 <body>
-<div class="container-fluid">
-    <div class="col-md-offset-1 col-md-5 mt24 mb24">
+<div class="mt24" style="position: fixed; width: 50%;">
+    <div class="col-md-offset-2 col-md-10">
         <div class="form-group mb24">
             <label>elasticsearch查询</label>
             <input type="url" class="form-control" id="elasticUrl" placeholder="elasticsearch服务器，默认 http://localhost:9200">
@@ -59,8 +59,10 @@
         <textarea id="elasticInput" class="form-control mb24" rows="15">${search}</textarea>
         <button id="submit" type="button" class="btn btn-primary mt12">Submit</button>
     </div>
+</div>
 
-    <div class="col-md-5 mt24 mb24">
+<div class="mt24 mb24" style="position: absolute; width: 50%; right: 0">
+    <div class="col-md-10">
         <label>查询结果</label>
         <div id="elasticResult">
             <c:if test="${list != null}">

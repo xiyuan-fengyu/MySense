@@ -63,14 +63,6 @@ public class ElasticOption {
             tempResult = HttpRequest.delete(elastic + path).body();
         }
         this.result = tempResult;
-
-        if (!"GET".equals(method)) {
-            try {
-                Thread.sleep(ElasticSearchCfg.wait_after_modify);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public static List<ElasticOption> parse(String str) {
@@ -106,6 +98,14 @@ public class ElasticOption {
                     else if (line.startsWith("DELETE ")) {
                         options.add(new ElasticOption("DELETE", line.substring(7), null, elastic));
                     }
+                    else if (line.startsWith("WAIT ")) {
+                        try {
+                            long wait = Long.parseLong(line.substring(5));
+                            Thread.sleep(wait);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }
@@ -124,7 +124,7 @@ public class ElasticOption {
             i++;
             line = lines[i].trim();
             if (line.length() > 0 && !line.startsWith("#") && !line.startsWith("//")) {
-                if (line.matches("^(GET|POST|PUT|DELETE) .*")) {
+                if (line.matches("^(GET|POST|PUT|DELETE|WAIT) .*")) {
                     i--;
                     break;
                 }

@@ -16,6 +16,7 @@ $(document).ready(() => {
         extraKeys: extraKeys
     });
     let elasticUrl = $("#elasticUrl");
+    let elasticResult = $("#elasticResult");
 
     $(".jsonData").each((i, obj) => {
         jsonDataDivFormat(obj);
@@ -26,6 +27,7 @@ $(document).ready(() => {
     });
 
     function submit() {
+        elasticResult.html("");
         $.post("/app/sense/execute", {
             data: elasticInput.getValue(),
             elastic: elasticUrl.val()
@@ -52,13 +54,13 @@ $(document).ready(() => {
                         </div>
                         `;
                 }).join("\n");
-                $("#elasticResult").html(htmlStr);
+                elasticResult.html(htmlStr);
                 $(".jsonData").each((i, obj) => {
                     jsonDataDivFormat(obj);
                 });
             }
             else {
-                $("#elasticResult").html(res.message);
+                elasticResult.html(res.message);
             }
         });
     }

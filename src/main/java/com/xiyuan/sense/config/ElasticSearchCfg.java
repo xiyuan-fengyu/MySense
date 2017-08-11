@@ -18,6 +18,4 @@ public class ElasticSearchCfg {
 
 	public static final String root = properties.getProperty("root");
 
-	public static final int wait_after_modify = Integer.parseInt(properties.getProperty("wait_after_modify"));
-
 }
