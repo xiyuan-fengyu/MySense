@@ -1,0 +1,2 @@
+//获取集群的健康状况
+GET /_cat/health?v

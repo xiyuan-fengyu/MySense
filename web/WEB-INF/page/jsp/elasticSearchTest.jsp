@@ -47,12 +47,19 @@
             min-height: 640px;
         }
 
+        .list-group-item {
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
 <body>
-<div class="mt24" style="position: fixed; width: 50%;">
-    <div class="col-md-offset-2 col-md-10">
+<div class="mt24" style="position: fixed; width: 60%;">
+    <ul id="locals" class="col-md-offset-1 col-md-3 list-group" style="max-height: 720px; overflow-y: auto">
+
+    </ul>
+    <div class="col-md-8">
         <div class="form-group mb24">
             <label>elasticsearch查询</label>
             <input type="url" class="form-control" id="elasticUrl" placeholder="elasticsearch服务器，默认 http://localhost:9200">
@@ -62,7 +69,7 @@
     </div>
 </div>
 
-<div class="mt24 mb24" style="position: absolute; width: 50%; right: 0">
+<div class="mt24 mb24" style="position: absolute; width: 40%; right: 0">
     <div class="col-md-10">
         <label>查询结果</label>
         <div id="elasticResult">

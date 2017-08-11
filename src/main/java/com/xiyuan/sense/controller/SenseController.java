@@ -8,6 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +43,25 @@ public class SenseController {
         }
         else {
             return ResponseUtil.fail("执行失败");
+        }
+    }
+
+    @RequestMapping(value = "app/sense/locals")
+    @ResponseBody
+    public Map<String, Object> locals(HttpServletRequest request) {
+        File elasticDir = new File(request.getSession().getServletContext().getRealPath("data/elastic"));
+        if (elasticDir.exists() && elasticDir.isDirectory()) {
+            List<String> names = new ArrayList<>();
+            File[] files = elasticDir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    names.add(file.getName());
+                }
+            }
+            return ResponseUtil.success("elasticsearch查询语句文件列表查询成功", names);
+        }
+        else {
+            return ResponseUtil.fail("文件夹data/elastic 不存在");
         }
     }
 

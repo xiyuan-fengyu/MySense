@@ -27,6 +27,8 @@ $(document).ready(() => {
         submit();
     });
 
+    loadLocals();
+
     function submit() {
         elasticResult.html("");
         $.post("/app/sense/execute", {
@@ -75,6 +77,38 @@ $(document).ready(() => {
         catch (e) {
             $obj.html(str.split('\n').map(item => `<p>${item}</p>`).join('\n'));
         }
+    }
+
+    function loadLocals() {
+        let locals = $("#locals");
+        $.get("/app/sense/locals", (res, status) => {
+            if (res.success) {
+                res.data.forEach(item => {
+                    locals.append(`
+                       <li data-value="${item}" class="list-group-item">${item}</li>
+                    `);
+                });
+
+                let lis = locals.find("li");
+                lis.each((i, li) => {
+                    let $li = $(li);
+                    $li.click(e => {
+                        if (!$li.hasClass("active")) {
+                            lis.removeClass("active");
+                            $li.addClass("active");
+                            loadLocal($li.attr("data-value"));
+                        }
+                    });
+                });
+            }
+        });
+    }
+
+    function loadLocal(file) {
+        $.get("/data/elastic/" + file, (res, status) => {
+            elasticInput.setValue(res);
+            submit();
+        });
     }
 
 });

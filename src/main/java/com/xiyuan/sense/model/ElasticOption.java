@@ -18,7 +18,7 @@ public class ElasticOption {
 
     public final String body;
 
-    public final String result;
+    private String result;
 
     public String getMethod() {
         return method;
@@ -36,11 +36,13 @@ public class ElasticOption {
         return result;
     }
 
-    private ElasticOption(String method, String path, String body, String elastic) {
+    private ElasticOption(String method, String path, String body) {
         this.method = method;
         this.path = path;
         this.body = body;
+    }
 
+    private void execute(String elastic) {
         String tempResult = null;
         if ("GET".equals(method)) {
             HttpRequest request = HttpRequest.get(elastic + path);
@@ -74,7 +76,7 @@ public class ElasticOption {
             elastic = ElasticSearchCfg.root;
         }
 
-        List<ElasticOption> options = new ArrayList<>();
+        List<ElasticOption> actions = new ArrayList<>();
         if (str != null) {
             String[] lines = str.split("\n");
             Object[] out = new Object[2];
@@ -93,10 +95,10 @@ public class ElasticOption {
                         while (pathIndex < line.length() && line.charAt(pathIndex) == ' ') {
                             pathIndex++;
                         }
-                        options.add(new ElasticOption(method, line.substring(pathIndex), (String) out[1], elastic));
+                        actions.add(new ElasticOption(method, line.substring(pathIndex), (String) out[1]));
                     }
                     else if (line.startsWith("DELETE ")) {
-                        options.add(new ElasticOption("DELETE", line.substring(7), null, elastic));
+                        actions.add(new ElasticOption("DELETE", line.substring(7), null));
                     }
                     else if (line.startsWith("WAIT ")) {
                         try {
@@ -108,8 +110,22 @@ public class ElasticOption {
                     }
                 }
             }
+
+            for (int i = 0, size = actions.size(); i < size; i++) {
+                ElasticOption action = actions.get(i);
+                action.execute(elastic);
+                if (!"GET".equals(action.method)) {
+                    if (i + 1 < size && "GET".equals(actions.get(i + 1).method)) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
         }
-        return options;
+        return actions;
     }
 
     private static void findJsonBody(String[] lines, int i, Object[] out) {
