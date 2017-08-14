@@ -1,6 +1,7 @@
 //按照state分组，并统计每组的数量
 //如果将这个查询翻译为sql语句，其等价于
 //SELECT state, COUNT(*) FROM bank GROUP BY state ORDER BY COUNT(*) DESC
+//设置size为0可以忽略掉命中的文档，因为我们只关心分组统计的结果
 GET /bank/_search
 {
   "size": 0,
@@ -12,3 +13,61 @@ GET /bank/_search
     }
   }
 }
+
+
+//在上面的查询基础上，查询每一个分组的平均balance，平均age
+GET /bank/_search
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      },
+      "aggs": {
+        "avg_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        },
+        "avg_age": {
+          "avg": {
+            "field": "age"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+//在上面的查询基础上，还可以按照平均balance排序
+GET /bank/_search
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword",
+        "order": {
+            "avg_balance": "desc"
+        }
+      },
+      "aggs": {
+        "avg_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        },
+        "avg_age": {
+          "avg": {
+            "field": "age"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+//上面几个查询中的group_by_state，avg_balance，avg_age都可以任意命名，但是最好能言简意赅
