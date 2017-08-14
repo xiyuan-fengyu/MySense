@@ -1,0 +1,3 @@
+DELETE /my_first_index/person/1
+
+GET /my_first_index/person/1

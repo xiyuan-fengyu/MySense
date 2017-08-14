@@ -1,0 +1,35 @@
+//先删除my_first_index这个索引，
+//让数据进入一个固定的初始化状态
+DELETE /my_first_index
+
+
+//索引一个文档
+PUT /my_first_index/person/1
+{
+    "name": "Tom",
+    "age": 24,
+    "sex": 1
+}
+
+GET /my_first_index/person/1
+
+
+//更新刚刚索引的文档的部分字段
+POST /my_first_index/person/1/_update
+{
+    "doc": {
+        "name": "Cat",
+        "info": "name was updated"
+    }
+}
+
+GET /my_first_index/person/1
+
+
+//通过脚本的方式更新年龄
+POST /my_first_index/person/1/_update
+{
+    "script": "ctx._source.age += 1"
+}
+
+GET /my_first_index/person/1

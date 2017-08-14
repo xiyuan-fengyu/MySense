@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by xiyuan_fengyu on 2017/8/9.
@@ -58,6 +55,13 @@ public class SenseController {
                     names.add(file.getName());
                 }
             }
+            names.sort((o1, o2) -> {
+                try {
+                    return Integer.parseInt(o1.split("_")[0]) - Integer.parseInt(o2.split("_")[0]);
+                } catch (Exception e) {
+                    return 0;
+                }
+            });
             return ResponseUtil.success("elasticsearch查询语句文件列表查询成功", names);
         }
         else {

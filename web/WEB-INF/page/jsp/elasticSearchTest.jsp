@@ -65,7 +65,32 @@
             <input type="url" class="form-control" id="elasticUrl" placeholder="elasticsearch服务器，默认 http://localhost:9200">
         </div>
         <textarea id="elasticInput" class="form-control mb24" rows="15">${search}</textarea>
-        <button id="submit" type="button" class="btn btn-primary mt12">Submit</button>
+        <div class="mt12">
+            <button id="submit" type="button" class="btn btn-primary">Submit</button>
+            <a data-toggle="modal" data-target="#helpModal" href="" style="margin-left: 12px">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- helpModal -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">帮助</h4>
+            </div>
+            <div class="modal-body">
+                <p>1. 按下 <kbd><kbd>ctrl</kbd> + <kbd>Enter</kbd></kbd> 或者 Submit 以提交并执行；</p>
+                <p>2. 按下 <kbd><kbd>ctrl</kbd> + <kbd>/</kbd></kbd> 注释选中行 或者 取消注释；</p>
+                <p>3. 如果编辑框中有选中的内容，则只提交被选中的内容；</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 

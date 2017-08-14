@@ -1,0 +1,15 @@
+//批处理，在一次请求中完成多个操作
+//数据格式：每行一个json，有些操作的数据是单行，有的是两行
+//注意：在实际开发过程中，数据行中不要添加注释
+POST /my_first_index/person/_bulk
+//index操作两行数据
+{"index":{"_id":"1"}}
+{"name":"Tom","age":24,"sex":1}
+//index操作两行数据
+{"index":{"_id":"2"}}
+{"name":"Cat","age":25,"sex":1}
+//update操作两行数据
+{"update":{"_id":"1"}}
+{"doc":{"name":"Tomcat","age":23}}
+//delete操作一行数据
+{"delete":{"_id":"2"}}

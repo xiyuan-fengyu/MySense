@@ -31,8 +31,17 @@ $(document).ready(() => {
 
     function submit() {
         elasticResult.html("");
+
+        let script = elasticInput.getSelection();
+        if (script.length == 0) {
+            script = elasticInput.getValue();
+            if (script.length == 0) {
+                return;
+            }
+        }
+
         $.post("/app/sense/execute", {
-            data: elasticInput.getValue(),
+            data: script,
             elastic: elasticUrl.val()
         }, (res, status) => {
             if (res.success) {
@@ -151,8 +160,9 @@ $(document).ready(() => {
         });
     }
 
+    let v = new Date().getTime();
     function loadLocal(file) {
-        $.get("/data/elastic/" + file, (res, status) => {
+        $.get(`/data/elastic/${file}?v=${v}`, (res, status) => {
             elasticInput.setValue(res);
             submit();
         });

@@ -1,0 +1,19 @@
+//通过过滤器过滤 20000 <= balance <= 30000 的文档
+GET /bank/_search
+{
+    "query": {
+        "bool": {
+            "must": {
+                "match_all": {}
+            },
+            "filter": {
+                "range": {
+                    "balance": {
+                        "gte": 20000,
+                        "lte": 30000
+                    }
+                }
+            }
+        }
+    }
+}

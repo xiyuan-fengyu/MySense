@@ -1,2 +1,11 @@
-//这里的索引是动词，相当于把文档存储到elasticsearch，并且通过分析文档中的内容创建相应的索引(名词)
-PUT /my_first_index/
+//这里的索引是动词，相当于把文档存储到elasticsearch，
+//并且通过分析文档中的内容创建相应的索引(名词)
+PUT /my_first_index/person/1
+{
+    "name": "Tom",
+    "age": 24,
+    "sex": 1
+}
+
+//查询刚刚索引的文档
+GET /my_first_index/person/1

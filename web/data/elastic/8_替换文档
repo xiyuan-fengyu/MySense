@@ -1,0 +1,37 @@
+//先删除my_first_index这个索引，
+//让数据进入一个固定的初始化状态
+DELETE /my_first_index
+
+//索引一个文档
+PUT /my_first_index/person/1
+{
+    "name": "Tom",
+    "age": 24,
+    "sex": 1
+}
+
+GET /my_first_index/person/1
+
+
+//替换刚刚的文档，其实是以同样的id重新索引一次
+PUT /my_first_index/person/1
+{
+    "name": "Cat",
+    "age": 24,
+    "sex": 1
+}
+
+GET /my_first_index/person/1
+
+//如果在索引的时候不提供id，则elasticsearch会自动为这个文档生成一个新id
+//在返回结果中可以看到生成的id，注意：请求方法为POST
+POST /my_first_index/person
+{
+    "name": "Cat",
+    "age": 24,
+    "sex": 1,
+    "info": "with random id"
+}
+
+//查询所有的/my_first_index/person文档
+GET /my_first_index/person/_search

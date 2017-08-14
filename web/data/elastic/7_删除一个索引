@@ -1,0 +1,3 @@
+DELETE /my_first_index
+
+GET /_cat/indices?v

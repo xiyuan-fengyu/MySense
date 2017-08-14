@@ -1,0 +1,135 @@
+//请先运行"12_通过批处理导入一些数据用于后续的一些查询"导入数据
+
+//第一种查询方式，将查询条件拼接在URL的参数中
+GET /bank/_search?q=*&sort=account_number:asc
+//或者
+//GET /bank/account/_search?q=*&sort=account_number:asc
+
+//第二种方式，将查询条件放在body中（虽然方法是GET，
+//但实际发送请求的时候应该是使用的POST请求，
+//可以试着用POST来发送，同样可以请求成功）
+GET /bank/_search
+{
+  "query": { "match_all": {} },
+  "sort": [
+    { "account_number": "asc" }
+  ]
+}
+//或者
+// POST /bank/_search
+// {
+//   "query": { "match_all": {} },
+//   "sort": [
+//     { "account_number": "asc" }
+//   ]
+// }
+
+
+//当查询条件复杂的时候，一般采用第二种形式
+
+
+//在第二种采用方式中，排序的方式可以指定多个，优先级依次递降，
+//可以通过from指定从第几个开始返回结果，默认为0，
+//size指定依次返回的结果数量，默认为10
+GET /bank/_search
+{
+	"query": {
+      "match_all": {}
+    },
+  	"sort": {
+		"balance": "desc",
+        "age": "asc"
+    },
+    "from": 1,
+    "size": 15
+}
+
+
+//通过 _source 指定返回的字段列表
+GET /bank/_search
+{
+	"query": {
+      "match_all": {}
+    },
+  	"_source": [
+  	    "account_number",
+  	    "balance"
+  	]
+}
+
+
+//通过 match 让一些字段匹配一些值
+GET /bank/_search
+{
+  "query": { "match": { "account_number": 20 } }
+}
+GET /bank/_search
+{
+  "query": { "match": { "address": "mill" } }
+}
+
+
+//下面两种写法是等价的，都是匹配address中包含了mill或者lane的文档
+//bool.should中的条件满足其一就符合查询条件
+//bool.must中的条件必须全部满足
+//bool.must_not中的条件必须全部不满足
+//如果bool下面有should,must,must_not等等中的多个,则最终的结果是这些的与
+GET /bank/_search
+{
+  "query": { "match": { "address": "mill lane" } }
+}
+GET /bank/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "address": "mill" } },
+        { "match": { "address": "lane" } }
+      ]
+    }
+  }
+}
+
+
+//address同时包含 mill 和 lane，不分先后顺序
+GET /bank/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "address": "mill" } },
+        { "match": { "address": "lane" } }
+      ]
+    }
+  }
+}
+
+
+//搜索age为40 且 state不为ID的文档
+GET /bank/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "age": "40" } }
+      ],
+      "must_not": [
+        { "match": { "state": "ID" } }
+      ]
+    }
+  }
+}
+
+
+//match_phrase匹配的模式比较严格，
+//address中必须连续依次出现mill lane两个单词，
+//才能成功匹配
+//例如：
+//the mill lane 匹配成功
+//the smill lane 匹配失败
+//lane mill 匹配失败
+//mill the lane 匹配失败
+GET /bank/_search
+{
+  "query": { "match_phrase": { "address": "mill lane" } }
+}

@@ -117,7 +117,7 @@ public class ElasticOption {
                 if (!"GET".equals(action.method)) {
                     if (i + 1 < size && "GET".equals(actions.get(i + 1).method)) {
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(1250);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
