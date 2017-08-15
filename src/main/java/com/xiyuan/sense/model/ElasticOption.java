@@ -133,8 +133,6 @@ public class ElasticOption {
 
         int len = lines.length;
         String line;
-        boolean isBodyFind = false;
-
         StringBuilder builder = new StringBuilder();
         while (i + 1 < len) {
             i++;
