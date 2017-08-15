@@ -1,7 +1,7 @@
 package com.xiyuan.sense.controller;
 
 import com.github.kevinsawicki.http.HttpRequest;
-import com.xiyuan.sense.model.ElasticOption;
+import com.xiyuan.sense.model.ElasticSearch;
 import com.xiyuan.sense.util.ResponseUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xiyuan_fengyu on 2017/8/9.
@@ -23,7 +25,7 @@ public class SenseController {
         if (load_from != null) {
             String search = HttpRequest.get(load_from).body();
             model.addAttribute("search", search);
-            model.addAttribute("list", ElasticOption.parse(search));
+            model.addAttribute("list", ElasticSearch.parse(search, null));
         }
         else {
             model.addAttribute("search", "");
@@ -34,7 +36,7 @@ public class SenseController {
     @RequestMapping(value = "app/sense/execute")
     @ResponseBody
     public Map<String, Object> execute(String data, String elastic) {
-        List<ElasticOption> list = ElasticOption.parse(data, elastic);
+        List<ElasticSearch> list = ElasticSearch.parse(data, elastic);
         if (list.size() > 0) {
             return ResponseUtil.success("执行成功", list);
         }

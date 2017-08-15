@@ -1,16 +1,17 @@
 package com.xiyuan.sense.model;
 
 import com.github.kevinsawicki.http.HttpRequest;
-import com.xiyuan.sense.config.ElasticSearchCfg;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by xiyuan_fengyu on 2017/8/9.
  */
-public class ElasticOption {
+public class ElasticSearch {
 
     public final String method;
 
@@ -36,7 +37,7 @@ public class ElasticOption {
         return result;
     }
 
-    private ElasticOption(String method, String path, String body) {
+    private ElasticSearch(String method, String path, String body) {
         this.method = method;
         this.path = path;
         this.body = body;
@@ -67,16 +68,23 @@ public class ElasticOption {
         this.result = tempResult;
     }
 
-    public static List<ElasticOption> parse(String str) {
-        return parse(str, ElasticSearchCfg.root);
-    }
+    private static final Pattern paramPattern = Pattern.compile("(\\$\\{(\\d+)\\})");
 
-    public static List<ElasticOption> parse(String str, String elastic) {
+    public static List<ElasticSearch> parse(String str, String elastic, String ...params) {
         if (elastic == null || elastic.isEmpty()) {
-            elastic = ElasticSearchCfg.root;
+            elastic = "http://localhost:9200";
         }
 
-        List<ElasticOption> actions = new ArrayList<>();
+        if (params != null) {
+            Matcher matcher = paramPattern.matcher(str);
+            while (matcher.find()) {
+                int paramIndex = Integer.parseInt(matcher.group(2));
+                str = matcher.replaceFirst(params[paramIndex]);
+                matcher.reset(str);
+            }
+        }
+
+        List<ElasticSearch> actions = new ArrayList<>();
         if (str != null) {
             String[] lines = str.split("\n");
             Object[] out = new Object[2];
@@ -95,10 +103,10 @@ public class ElasticOption {
                         while (pathIndex < line.length() && line.charAt(pathIndex) == ' ') {
                             pathIndex++;
                         }
-                        actions.add(new ElasticOption(method, line.substring(pathIndex), (String) out[1]));
+                        actions.add(new ElasticSearch(method, line.substring(pathIndex), (String) out[1]));
                     }
                     else if (line.startsWith("DELETE ")) {
-                        actions.add(new ElasticOption("DELETE", line.substring(7), null));
+                        actions.add(new ElasticSearch("DELETE", line.substring(7), null));
                     }
                     else if (line.startsWith("WAIT ")) {
                         try {
@@ -112,7 +120,7 @@ public class ElasticOption {
             }
 
             for (int i = 0, size = actions.size(); i < size; i++) {
-                ElasticOption action = actions.get(i);
+                ElasticSearch action = actions.get(i);
                 action.execute(elastic);
                 if (!"GET".equals(action.method)) {
                     if (i + 1 < size && "GET".equals(actions.get(i + 1).method)) {
@@ -136,8 +144,8 @@ public class ElasticOption {
         StringBuilder builder = new StringBuilder();
         while (i + 1 < len) {
             i++;
-            line = lines[i].trim();
-            if (line.length() > 0 && !line.startsWith("#") && !line.startsWith("//")) {
+            line = lines[i];
+            if (line.length() > 0 && !line.matches(" *(#|//)")) {
                 if (line.matches("^(GET|POST|PUT|DELETE|WAIT) .*")) {
                     i--;
                     break;
