@@ -32,6 +32,8 @@ public class Test {
 //                "}";
 //        HttpRequest.get("http://localhost:9200/megacorp/employee/_search").send(data).receive(System.out);
 
+
+        System.out.println("//创建索引".matches("( |\\t)*(#|//).*"));
     }
 
 }

@@ -145,7 +145,7 @@ public class ElasticSearch {
         while (i + 1 < len) {
             i++;
             line = lines[i];
-            if (line.length() > 0 && !line.matches("( |\t)*(#|//)")) {
+            if (line.length() > 0 && !line.matches("( |\\t)*(#|//).*")) {
                 if (line.matches("^(GET|POST|PUT|DELETE|WAIT) .*")) {
                     i--;
                     break;
