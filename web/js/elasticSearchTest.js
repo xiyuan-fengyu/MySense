@@ -164,7 +164,7 @@ $(document).ready(() => {
     function loadLocal(file) {
         $.get(`/data/elastic/${file}?v=${v}`, (res, status) => {
             elasticInput.setValue(res);
-            submit();
+            // submit();
         });
     }
 
