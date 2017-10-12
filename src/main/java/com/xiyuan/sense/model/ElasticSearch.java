@@ -70,7 +70,7 @@ public class ElasticSearch {
 
     private static final Pattern paramPattern = Pattern.compile("(\\$\\{(\\d+)\\})");
 
-    public static List<ElasticSearch> parse(String str, String elastic, String ...params) {
+    public static List<ElasticSearch> parse(String elastic, String str, String ...params) {
         if (elastic == null || elastic.isEmpty()) {
             elastic = "http://localhost:9200";
         }

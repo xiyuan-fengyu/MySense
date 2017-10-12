@@ -25,7 +25,7 @@ public class SenseController {
         if (load_from != null) {
             String search = HttpRequest.get(load_from).body();
             model.addAttribute("search", search);
-            model.addAttribute("list", ElasticSearch.parse(search, null));
+            model.addAttribute("list", ElasticSearch.parse(null, search));
         }
         else {
             model.addAttribute("search", "");
@@ -36,7 +36,7 @@ public class SenseController {
     @RequestMapping(value = "app/sense/execute")
     @ResponseBody
     public Map<String, Object> execute(String data, String elastic) {
-        List<ElasticSearch> list = ElasticSearch.parse(data, elastic);
+        List<ElasticSearch> list = ElasticSearch.parse(elastic, data);
         if (list.size() > 0) {
             return ResponseUtil.success("执行成功", list);
         }
