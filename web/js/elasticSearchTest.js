@@ -40,7 +40,7 @@ $(document).ready(() => {
             }
         }
 
-        $.post("/app/sense/execute", {
+        $.post(ctx + "/app/sense/execute", {
             data: script,
             elastic: elasticUrl.val()
         }, (res, status) => {
@@ -137,7 +137,7 @@ $(document).ready(() => {
 
     function loadLocals() {
         let locals = $("#locals");
-        $.get("/app/sense/locals", (res, status) => {
+        $.get(ctx + "/app/sense/locals", (res, status) => {
             if (res.success) {
                 res.data.forEach(item => {
                     locals.append(`
@@ -162,7 +162,7 @@ $(document).ready(() => {
 
     let v = new Date().getTime();
     function loadLocal(file) {
-        $.get(`/data/elastic/${file}?v=${v}`, (res, status) => {
+        $.get(`${ctx}/data/elastic/${file}?v=${v}`, (res, status) => {
             elasticInput.setValue(res);
             // submit();
         });
