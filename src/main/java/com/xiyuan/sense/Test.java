@@ -1,10 +1,5 @@
 package com.xiyuan.sense;
 
-import com.github.kevinsawicki.http.HttpRequest;
-
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by xiyuan_fengyu on 2017/8/9.
  */
@@ -33,7 +28,8 @@ public class Test {
 //        HttpRequest.get("http://localhost:9200/megacorp/employee/_search").send(data).receive(System.out);
 
 
-        System.out.println("//创建索引".matches("( |\\t)*(#|//).*"));
     }
+
+
 
 }

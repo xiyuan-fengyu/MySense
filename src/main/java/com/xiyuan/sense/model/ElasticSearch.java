@@ -1,7 +1,10 @@
 package com.xiyuan.sense.model;
 
-import com.github.kevinsawicki.http.HttpRequest;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,28 +47,51 @@ public class ElasticSearch {
     }
 
     private void execute(String elastic) {
-        String tempResult = null;
-        if ("GET".equals(method)) {
-            HttpRequest request = HttpRequest.get(elastic + path);
-            if (body != null) {
-                request.send(body.getBytes(StandardCharsets.UTF_8));
+        this.result = http(elastic + path, method, body);
+    }
+
+    public static String http(String urlStr, String method, String data) {
+        try {
+            URL url = new URL(urlStr);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(method);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Connection", "Keep-Alive");
+            connection.setRequestProperty("Charset", "UTF-8");
+            connection.connect();
+
+            if (data != null && data.length() > 0) {
+                OutputStream outputStream = connection.getOutputStream();
+                outputStream.write(data.getBytes(StandardCharsets.UTF_8));
+                outputStream.flush();
             }
-            tempResult = request.body();
-        }
-        else if ("PUT".equals(method)) {
-            tempResult = HttpRequest.put(elastic + path).send(body == null ? new byte[0] : body.getBytes(StandardCharsets.UTF_8)).body();
-        }
-        else if ("POST".equals(method)) {
-            HttpRequest request = HttpRequest.post(elastic + path);
-            if (body != null) {
-                request.send(body.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder builder = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line).append('\n');
+                }
+            } catch (Exception e) {
+//                e.printStackTrace();
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        builder.append(line).append('\n');
+                    }
+                } catch (Exception ee) {
+//                e.printStackTrace();
+                }
             }
-            tempResult = request.body();
+            return builder.toString();
         }
-        else if ("DELETE".equals(method)) {
-            tempResult = HttpRequest.delete(elastic + path).body();
+        catch (Exception e) {
+            e.printStackTrace();
         }
-        this.result = tempResult;
+        return null;
     }
 
     private static final Pattern paramPattern = Pattern.compile("(\\$\\{(\\d+)\\})");

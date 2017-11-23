@@ -1,6 +1,5 @@
 package com.xiyuan.sense.controller;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import com.xiyuan.sense.model.ElasticSearch;
 import com.xiyuan.sense.util.ResponseUtil;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,7 @@ public class SenseController {
     @RequestMapping(value = {"/", "app/sense"})
     public String sensePage(String load_from, Model model) {
         if (load_from != null) {
-            String search = HttpRequest.get(load_from).body();
+            String search = ElasticSearch.http(load_from, "GET", null);
             model.addAttribute("search", search);
             model.addAttribute("list", ElasticSearch.parse(null, search));
         }
