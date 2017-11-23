@@ -20,7 +20,7 @@ import java.util.Map;
 @Controller
 public class SenseController {
 
-    @RequestMapping(value = "app/sense")
+    @RequestMapping(value = {"", "app/sense"})
     public String sensePage(String load_from, Model model) {
         if (load_from != null) {
             String search = HttpRequest.get(load_from).body();
