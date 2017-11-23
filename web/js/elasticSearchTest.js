@@ -19,6 +19,11 @@ $(document).ready(() => {
     let elasticUrl = $("#elasticUrl");
     let elasticResult = $("#elasticResult");
 
+    let matchIp = window.location.href.match("(http://\\d+\\.\\d+\\.\\d+\\.\\d+:).*");
+    if (matchIp) {
+        elasticUrl.val(matchIp[1] + "9200");
+    }
+
     $(".jsonData").each((i, obj) => {
         jsonDataDivFormat(obj);
     });
